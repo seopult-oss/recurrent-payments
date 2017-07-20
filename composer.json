@@ -1,0 +1,19 @@
+{
+    "name": "seopult.ru/recurrent-payments",
+    "description": "Client library for recurrent payments",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "iagafonov",
+            "email": "iagafonov@seopult.ru"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4" : {
+            "RecurrentPayments\\" : "src"
+        }
+    },
+    "require": {}
+}
