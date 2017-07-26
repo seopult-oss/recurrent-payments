@@ -2,8 +2,9 @@
 
 namespace RecurrentPayments\Strategy\Transport;
 
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
-
+/**
+ * Class Curl
+ */
 class Curl implements TransportInterface
 {
 	/**
@@ -82,8 +83,6 @@ class Curl implements TransportInterface
 
 		$errno = curl_errno($curl);
 		$error = curl_error($curl);
-
-		var_dump($headers);
 
 		if ($errno) {
 			return [

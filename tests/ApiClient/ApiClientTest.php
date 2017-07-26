@@ -1,11 +1,6 @@
 <?php
 namespace Tests\ApiClient;
 
-
-use RecurrentPayments\ApiClient\ApiClient;
-use RecurrentPayments\Strategy\Payments\Paymaster;
-use RecurrentPayments\Strategy\Transport\Curl;
-
 class ApiClientTest extends \Codeception\Test\Unit
 {
     /**
@@ -26,13 +21,16 @@ class ApiClientTest extends \Codeception\Test\Unit
     {
     	$params = [
     		'Paymaster' => [
-    			'redirectUri' => 'https://recurrent-payments.test.seopult.ru/billing.html'
+    			'redirectUri' => 'redirectUri',
+				'secretKey' => 'secretKey',
+				'merchantId' => 'merchantId',
+				'scope' => 'BankCard'
 			]
 		];
-		$curlTransport = new Curl();
-		$paymasterPaymentStrategy = new Paymaster($curlTransport);
-		$clientApi = new ApiClient($paymasterPaymentStrategy);
-		$AuthUri = $clientApi->authUserInPaymentSystem($params);
-		var_dump($AuthUri);
+		$curlTransport = new \RecurrentPayments\Strategy\Transport\Curl();
+		$paymasterPaymentStrategy = new \RecurrentPayments\Strategy\Payments\Paymaster($curlTransport);
+		$clientApi = new \RecurrentPayments\ApiClient\ApiClient($paymasterPaymentStrategy);
+		$payload = $clientApi->authUserInPaymentSystem($params);
+		$this->assertTrue(strpos($payload, ".") != -1);
     }
 }

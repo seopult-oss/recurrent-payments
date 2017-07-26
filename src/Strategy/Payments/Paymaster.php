@@ -1,7 +1,6 @@
 <?php
 
 namespace RecurrentPayments\Strategy\Payments;
-use PHPUnit\Framework\Exception;
 
 /**
  * Class Paymaster
@@ -23,21 +22,6 @@ class Paymaster implements StrategyInterface
 	}
 
 	/**
-	 * @var string
-	 */
-	protected $authUrl = "https://paymaster.ru/direct/security/auth";
-
-	/**
-	 * @var string
-	 */
-	protected $secretKey = "3d01d6683a2e9ac6799d97d1b9dafb557f6ea9d19ce3e89908d0a33879eb853d";
-
-	/**
-	 * @var string
-	 */
-	protected $merchantId = "7b596b14-b05a-4e35-8b61-cabbcc5d69cd";
-
-	/**
 	 * @param array $params
 	 *
 	 * @return mixed
@@ -46,6 +30,16 @@ class Paymaster implements StrategyInterface
 	 */
 	public function authUserInPaymentSystem(array $params)
 	{
+		if (empty($params['Paymaster']['merchantId'])) {
+			throw new \Exception("Merchant id does not exist");
+		}
+		$merchantId = $params['Paymaster']['merchantId'];
+
+		if (empty($params['Paymaster']['secretKey'])) {
+			throw new \Exception("Secret key does not exist");
+		}
+		$secretKey = $params['Paymaster']['secretKey'];
+
 		if (empty($params['Paymaster']['redirectUri'])) {
 			throw new \Exception("Redirect uri does not exist");
 		}
@@ -62,12 +56,12 @@ class Paymaster implements StrategyInterface
 		]);
 		$body = json_encode([
 			"response_type" => 'code',
-			"client_id" => $this->merchantId,
+			"client_id" => $merchantId,
 			"redirect_uri" => $redirectUri,
 			"scope" => $scope
 		]);
 
-		$sign = hash("sha256", base64_encode($header).".".base64_encode($body).";".$key, true);
+		$sign = hash("sha256", base64_encode($header).".".base64_encode($body).";".$secretKey, true);
 
 		$payload = base64_encode($header).".".base64_encode($body).".".base64_encode($sign);
 
