@@ -30,42 +30,53 @@ class Paymaster implements StrategyInterface
 	 */
 	public function authUserInPaymentSystem(array $params)
 	{
-		if (empty($params['Paymaster']['merchantId'])) {
-			throw new \Exception("Merchant id does not exist");
+		if (empty($params['Paymaster']['action'])) {
+			throw new \Exception("action id does not exist");
 		}
-		$merchantId = $params['Paymaster']['merchantId'];
+		switch ($params['Paymaster']['action']) {
+			case 'getTemporaryToken':
+				if (empty($params['Paymaster']['merchantId'])) {
+					throw new \Exception("Merchant id does not exist");
+				}
+				$merchantId = $params['Paymaster']['merchantId'];
 
-		if (empty($params['Paymaster']['secretKey'])) {
-			throw new \Exception("Secret key does not exist");
+				if (empty($params['Paymaster']['secretKey'])) {
+					throw new \Exception("Secret key does not exist");
+				}
+				$secretKey = $params['Paymaster']['secretKey'];
+
+				if (empty($params['Paymaster']['redirectUri'])) {
+					throw new \Exception("Redirect uri does not exist");
+				}
+				$redirectUri = $params['Paymaster']['redirectUri'];
+
+				if (empty($params['Paymaster']['scope'])) {
+					throw new \Exception("Scope does not exist");
+				}
+				$scope = $params['Paymaster']['scope'];
+
+				$header = json_encode([
+					"alg" => 'HS256',
+					"iat" => time()
+				]);
+				$body = json_encode([
+					"response_type" => 'code',
+					"client_id" => $merchantId,
+					"redirect_uri" => $redirectUri,
+					"scope" => $scope
+				]);
+
+				$sign = hash("sha256", base64_encode($header).".".base64_encode($body).";".$secretKey, true);
+
+				$payload = base64_encode($header).".".base64_encode($body).".".base64_encode($sign);
+
+				return $payload;
+				break;
+			case 'getPermanentToken':
+
+				break;
 		}
-		$secretKey = $params['Paymaster']['secretKey'];
-
-		if (empty($params['Paymaster']['redirectUri'])) {
-			throw new \Exception("Redirect uri does not exist");
-		}
-		$redirectUri = $params['Paymaster']['redirectUri'];
-
-		if (empty($params['Paymaster']['scope'])) {
-			throw new \Exception("Scope does not exist");
-		}
-		$scope = $params['Paymaster']['scope'];
-
-		$header = json_encode([
-			"alg" => 'HS256',
-			"iat" => time()
-		]);
-		$body = json_encode([
-			"response_type" => 'code',
-			"client_id" => $merchantId,
-			"redirect_uri" => $redirectUri,
-			"scope" => $scope
-		]);
-
-		$sign = hash("sha256", base64_encode($header).".".base64_encode($body).";".$secretKey, true);
-
-		$payload = base64_encode($header).".".base64_encode($body).".".base64_encode($sign);
-
-		return $payload;
+		return false;
 	}
 	/**
 	 * @param array $params
