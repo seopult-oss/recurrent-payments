@@ -21,6 +21,7 @@ class ApiClientTest extends \Codeception\Test\Unit
     {
     	$params = [
     		'Paymaster' => [
+    			'action' => 'getTemporaryToken',
     			'redirectUri' => 'redirectUri',
 				'secretKey' => 'secretKey',
 				'merchantId' => 'merchantId',
