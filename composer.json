@@ -2,7 +2,7 @@
     "name": "seopult.ru/recurrent-payments",
     "description": "Client library for recurrent payments",
     "type": "library",
-    "license": "MIT",
+    "license": "GPLv3",
     "authors": [
         {
             "name": "iagafonov",
@@ -15,5 +15,20 @@
             "RecurrentPayments\\" : "src"
         }
     },
-    "require": {}
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://gitlab.finotdel.org:30080/dmachehin/PHP_CodeSniffer.git"
+        }
+    ],
+    "scripts": {
+        "test": "./vendor/bin/codecept run unit --coverage --coverage-xml",
+        "ruleset": "./vendor/bin/codecept run unit --coverage --coverage-xml"
+    },
+    "require": {},
+    "require-dev": {
+        "satooshi/php-coveralls": "^1.0",
+        "codeception/codeception": "^2.3",
+        "squizlabs/php_codesniffer" : "dev-seopult"
+    }
 }
