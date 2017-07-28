@@ -8,24 +8,35 @@ namespace RecurrentPayments\Strategy\Payments;
 interface StrategyInterface
 {
 	/**
-	 * @param array $params
+	 * Auth user in payment system
+	 *
+	 * @param array $params Array of params
+	 *
 	 * @return mixed
+	 *
+	 * @throws \Exception
 	 */
 	public function authUserInPaymentSystem(array $params);
+
 	/**
-	 * @param array $params
+	 * Init payment
+	 *
+	 * @param array $params Array of params
+	 *
 	 * @return mixed
+	 *
+	 * @throws \Exception
 	 */
 	public function initPayment(array $params);
 
 	/**
-	 * @param \RecurrentPayments\Strategy\Transport\TransportInterface $transport
+	 * Logout user in payment system
+	 *
+	 * @param array $params Array of params
+	 *
 	 * @return mixed
+	 *
+	 * @throws \Exception
 	 */
-	public function setTransport($transport);
-
-	/**
-	 * @return \RecurrentPayments\Strategy\Transport\TransportInterface
-	 */
-	public function getTransport();
+	public function logoutUserInPaymentSystem(array $params);
 }

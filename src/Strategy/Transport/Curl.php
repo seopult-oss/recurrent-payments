@@ -8,6 +8,8 @@ namespace RecurrentPayments\Strategy\Transport;
 class Curl implements TransportInterface
 {
 	/**
+	 * Default curl options
+	 *
 	 * @var array
 	 */
 	protected $defaultCurlOptions = [
@@ -64,6 +66,7 @@ class Curl implements TransportInterface
 				$otherParams = json_encode($params);
 			}
 		}
+		
 		$curl = curl_init();
 		curl_setopt_array($curl, $this->defaultCurlOptions);
 		curl_setopt($curl, CURLOPT_URL, $requestUrl);
