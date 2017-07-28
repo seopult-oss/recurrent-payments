@@ -45,8 +45,7 @@ class ApiClient implements ApiClientInterface
 	 */
 	public function InitPayment(array $params)
 	{
-		$this->paymentStrategy->initPayment($params);
-		return 0;
+		return $this->paymentStrategy->initPayment($params);
 	}
 
 	/**

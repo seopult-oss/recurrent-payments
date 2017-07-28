@@ -36,10 +36,8 @@ class Curl implements TransportInterface
 		$method = strtoupper($method);
 		if (!in_array($method, ['POST', 'PUT', 'GET', 'UPDATE', 'DELETE', 'PATCH'])) {
 			return [
-				'error' => [
-					'code' => 911,
-					'text' => "Method not allowed"
-				]
+				'error' => 911,
+				'message' => "Method not allowed"
 			];
 		}
 
@@ -90,7 +88,7 @@ class Curl implements TransportInterface
 		if ($errno) {
 			return [
 				'error' => 700,
-				'text' => "Transfer protocol error ($errno): $error"
+				'message' => "Transfer protocol error ($errno): $error"
 			];
 		} else {
 			return [

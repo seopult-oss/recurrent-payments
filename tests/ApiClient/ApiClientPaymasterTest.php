@@ -26,13 +26,6 @@ class ApiClientPaymasterTest extends \Codeception\Test\Unit
             'merchantId' => 'merchantId',
             'scope' => 'BankCard'
         ];
-		$params = [
-			'action' => 'getTemporaryToken',
-			'redirectUri' => 'https://recurrent-payments.test.seopult.ru/billing.html',
-			'scope' => 'BankCard',
-			'secretKey' => '3d01d6683a2e9ac6799d97d1b9dafb557f6ea9d19ce3e89908d0a33879eb853d',
-			'merchantId' => '7b596b14-b05a-4e35-8b61-cabbcc5d69cd'
-		];
 
     	$apiClient = \RecurrentPayments\ApiClient\Factory\ApiClientFactory::createApiClient('Paymaster');
 		$payload = $apiClient->authUserInPaymentSystem($params);
@@ -47,6 +40,8 @@ class ApiClientPaymasterTest extends \Codeception\Test\Unit
 		);
 
 		$this->assertEquals(0, $response['error']);
+		$this->assertTrue(strpos($response['headers'], "HTTP/1.1 200 OK") !== false);
+		$this->assertTrue(strpos($response['response'], "Unknown merchant") !== false);
     }
 
     public function testGetPermanentToken()
@@ -60,17 +55,67 @@ class ApiClientPaymasterTest extends \Codeception\Test\Unit
 			'temporaryToken' => 'Unknown temporary token'
         ];
 
-		$params = [
-			'action' => 'getPermanentToken',
-			'redirectUri' => 'https://recurrent-payments.test.seopult.ru/billing.html',
-			'temporaryToken' => 'bgfdhrfhrth',
-			'secretKey' => '3d01d6683a2e9ac6799d97d1b9dafb557f6ea9d19ce3e89908d0a33879eb853d',
-			'merchantId' => '7b596b14-b05a-4e35-8b61-cabbcc5d69cd'
-		];
-
         $apiClient = \RecurrentPayments\ApiClient\Factory\ApiClientFactory::createApiClient('Paymaster');
         $response = $apiClient->authUserInPaymentSystem($params);
 
 		$this->assertEquals(0, $response['error']);
+		$this->assertTrue(strpos($response['headers'], "HTTP/1.1 100 Continue") !== false);
+		$this->assertTrue(strpos($response['response'], "verification_failure") !== false);
     }
+
+	public function testInitPayment()
+	{
+		$params = [
+			'action' => 'initPayment',
+			'secretKey' => 'secretKey',
+			'merchantId' => 'merchantId',
+			'accessToken' => 'Unknown access token',
+			'merchantTransactionId' => 1,
+			"amount" => 1,
+			"currency" => 'RUB'
+		];
+
+		$apiClient = \RecurrentPayments\ApiClient\Factory\ApiClientFactory::createApiClient('Paymaster');
+		$response = $apiClient->InitPayment($params);
+
+		$this->assertEquals(0, $response['error']);
+
+		$this->assertTrue(strpos($response['headers'], "HTTP/1.1 100 Continue") !== false);
+		$this->assertTrue(strpos($response['response'], "verification_failure") !== false);
+
+	}
+
+	public function testConfirmPayment()
+	{
+		$params = [
+			'action' => 'confirmPayment',
+			'secretKey' => 'secretKey',
+			'merchantId' => 'merchantId',
+			'accessToken' => 'Unknown access token',
+			'merchantTransactionId' => 1,
+		];
+
+		$apiClient = \RecurrentPayments\ApiClient\Factory\ApiClientFactory::createApiClient('Paymaster');
+		$response = $apiClient->InitPayment($params);
+
+		$this->assertEquals(0, $response['error']);
+		$this->assertTrue(strpos($response['headers'], "HTTP/1.1 100 Continue") !== false);
+		$this->assertTrue(strpos($response['response'], "verification_failure") !== false);
+	}
+
+	public function testRevokePaymentToken()
+	{
+		$params = [
+			'secretKey' => 'secretKey',
+			'merchantId' => 'merchantId',
+			'accessToken' => 'Access temporary token'
+		];
+
+		$apiClient = \RecurrentPayments\ApiClient\Factory\ApiClientFactory::createApiClient('Paymaster');
+		$response = $apiClient->logoutUserInPaymentSystem($params);
+
+		$this->assertEquals(0, $response['error']);
+		$this->assertTrue(strpos($response['headers'], "HTTP/1.1 100 Continue") !== false);
+		$this->assertTrue(strpos($response['response'], "verification_failure") !== false);
+	}
 }

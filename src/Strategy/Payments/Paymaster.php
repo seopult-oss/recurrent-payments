@@ -225,7 +225,7 @@ class Paymaster implements StrategyInterface
 				);
 				return $result;
 				break;
-			case 'completePayment':
+			case 'confirmPayment':
 				if (empty($params['secretKey'])) {
 					throw new \Exception("Secret key does not exist");
 				}
@@ -246,15 +246,10 @@ class Paymaster implements StrategyInterface
 				}
 				$merchantTransactionId = $params['merchantTransactionId'];
 
-				if (empty($params['amount'])) {
-					throw new \Exception("Amount does not exist");
-				}
-				$amount = $params['amount'];
-
-				if (empty($params['processorTransactionId'])) {
-					throw new \Exception("Processor transaction id does not exist");
-				}
-				$processorTransactionId = $params['processorTransactionId'];
+				//if (empty($params['processorTransactionId'])) {
+				//throw new \Exception("Processor transaction id does not exist");
+				//}
+				//$processorTransactionId = $params['processorTransactionId'];
 
 				$header = json_encode([
 					"alg" => 'HS256',
@@ -264,9 +259,7 @@ class Paymaster implements StrategyInterface
 					"access_token" => $accessToken,
 					"merchant_id" => $merchantId,
 					"merchant_transaction_id" => $merchantTransactionId,
-					"processor_transaction_id" => $processorTransactionId,
-					"amount" => $amount,
-					"currency" => 'RUB'
+					//"processor_transaction_id" => $processorTransactionId,
 				]);
 
 				$sign = hash("sha256", base64_encode($header).".".base64_encode($body).";".$secretKey, true);
