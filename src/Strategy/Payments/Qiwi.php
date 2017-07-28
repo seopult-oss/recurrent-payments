@@ -8,23 +8,30 @@ namespace RecurrentPayments\Strategy\Payments;
 class Qiwi implements StrategyInterface
 {
 	/**
+	 * Transport
+	 *
 	 * @var \RecurrentPayments\Strategy\Transport\TransportInterface
 	 */
 	protected $transport;
 
 	/**
 	 * Paymaster constructor.
-	 * @param \RecurrentPayments\Strategy\Transport\TransportInterface $transport
+	 *
+	 * @param \RecurrentPayments\Strategy\Transport\TransportInterface $transport Transport
 	 */
-	public function __construct($transport)
+	public function __construct(\RecurrentPayments\Strategy\Transport\TransportInterface $transport)
 	{
 		$this->transport = $transport;
 	}
 
 	/**
-	 * @param array $params
+	 * Auth user in payment system
+	 *
+	 * @param array $params Array of params
 	 *
 	 * @return mixed
+	 *
+	 * @throws \Exception
 	 */
 	public function authUserInPaymentSystem(array $params)
 	{
@@ -33,8 +40,13 @@ class Qiwi implements StrategyInterface
 	}
 
 	/**
-	 * @param array $params
-	 * @return mixed;
+	 * Init payment
+	 *
+	 * @param array $params Array of params
+	 *
+	 * @return mixed
+	 *
+	 * @throws \Exception
 	 */
 	public function initPayment(array $params)
 	{
@@ -42,20 +54,16 @@ class Qiwi implements StrategyInterface
 	}
 
 	/**
-	 * @param \RecurrentPayments\Strategy\Transport\TransportInterface $transport
+	 * Logout user in payment system
+	 *
+	 * @param array $params Array of params
+	 *
 	 * @return mixed
+	 *
+	 * @throws \Exception
 	 */
-	public function setTransport($transport)
+	public function logoutUserInPaymentSystem(array $params)
 	{
-		$this->transport = $transport;
-		return $this;
-	}
-
-	/**
-	 * @return \RecurrentPayments\Strategy\Transport\TransportInterface
-	 */
-	public function getTransport()
-	{
-		return $this->transport;
+		return 0;
 	}
 }

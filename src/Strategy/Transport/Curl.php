@@ -8,6 +8,8 @@ namespace RecurrentPayments\Strategy\Transport;
 class Curl implements TransportInterface
 {
 	/**
+	 * Default curl options
+	 *
 	 * @var array
 	 */
 	protected $defaultCurlOptions = [
@@ -34,10 +36,8 @@ class Curl implements TransportInterface
 		$method = strtoupper($method);
 		if (!in_array($method, ['POST', 'PUT', 'GET', 'UPDATE', 'DELETE', 'PATCH'])) {
 			return [
-				'error' => [
-					'code' => 911,
-					'text' => "Method not allowed"
-				]
+				'error' => 911,
+				'message' => "Method not allowed"
 			];
 		}
 
@@ -64,6 +64,7 @@ class Curl implements TransportInterface
 				$otherParams = json_encode($params);
 			}
 		}
+		
 		$curl = curl_init();
 		curl_setopt_array($curl, $this->defaultCurlOptions);
 		curl_setopt($curl, CURLOPT_URL, $requestUrl);
@@ -87,7 +88,7 @@ class Curl implements TransportInterface
 		if ($errno) {
 			return [
 				'error' => 700,
-				'text' => "Transfer protocol error ($errno): $error"
+				'message' => "Transfer protocol error ($errno): $error"
 			];
 		} else {
 			return [
