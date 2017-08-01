@@ -95,6 +95,11 @@ class Paymaster implements StrategyInterface
 				}
 				$scope = $params['scope'];
 
+				if (empty($params['spendLimit'])) {
+					throw new \Exception("Spends limit does not exist");
+				}
+				$spendLimit = $params['spendLimit'];
+
 				$header = json_encode([
 					"alg" => 'HS256',
 					"iat" => time()
@@ -103,7 +108,10 @@ class Paymaster implements StrategyInterface
 					"response_type" => 'code',
 					"client_id" => $merchantId,
 					"redirect_uri" => $redirectUri,
-					"scope" => $scope
+					"scope" => $scope,
+					"limits" => [
+						"RUB" => "$spendLimit;$spendLimit;$spendLimit"
+					]
 				]);
 
 				$sign = hash("sha256", base64_encode($header).".".base64_encode($body).";".$secretKey, true);

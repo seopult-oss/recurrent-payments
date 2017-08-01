@@ -24,7 +24,8 @@ class ApiClientPaymasterTest extends \Codeception\Test\Unit
             'redirectUri' => 'redirectUri',
             'secretKey' => 'secretKey',
             'merchantId' => 'merchantId',
-            'scope' => 'BankCard'
+            'scope' => 'BankCard',
+			'spendLimit' => 3000
         ];
 
     	$apiClient = \RecurrentPayments\ApiClient\Factory\ApiClientFactory::createApiClient('Paymaster');
