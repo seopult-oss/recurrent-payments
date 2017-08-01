@@ -95,10 +95,10 @@ class Paymaster implements StrategyInterface
 				}
 				$scope = $params['scope'];
 
-				if (empty($params['SpendLimit'])) {
+				if (empty($params['spendLimit'])) {
 					throw new \Exception("Spends limit does not exist");
 				}
-				$spendLimit = $params['SpendLimit'];
+				$spendLimit = $params['spendLimit'];
 
 				$header = json_encode([
 					"alg" => 'HS256',
