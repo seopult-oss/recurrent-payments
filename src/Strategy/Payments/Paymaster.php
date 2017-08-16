@@ -318,7 +318,7 @@ class Paymaster implements StrategyInterface
 		]);
 		$body = json_encode([
 			"access_token" => $accessToken,
-			"merchant_id" => $merchantId,
+			"client_id" => $merchantId,
 		]);
 
 		$sign = hash("sha256", base64_encode($header).".".base64_encode($body).";".$secretKey, true);
