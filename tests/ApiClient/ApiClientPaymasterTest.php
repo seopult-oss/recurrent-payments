@@ -94,6 +94,7 @@ class ApiClientPaymasterTest extends \Codeception\Test\Unit
 			'merchantId' => 'merchantId',
 			'accessToken' => 'Unknown access token',
 			'merchantTransactionId' => 1,
+			'processorTransactionId' => 1
 		];
 
 		$apiClient = \RecurrentPayments\ApiClient\Factory\ApiClientFactory::createApiClient('Paymaster');
