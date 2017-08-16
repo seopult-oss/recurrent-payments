@@ -254,10 +254,10 @@ class Paymaster implements StrategyInterface
 				}
 				$merchantTransactionId = $params['merchantTransactionId'];
 
-				//if (empty($params['processorTransactionId'])) {
-				//throw new \Exception("Processor transaction id does not exist");
-				//}
-				//$processorTransactionId = $params['processorTransactionId'];
+				if (empty($params['processorTransactionId'])) {
+					throw new \Exception("Processor transaction id does not exist");
+				}
+				$processorTransactionId = $params['processorTransactionId'];
 
 				$header = json_encode([
 					"alg" => 'HS256',
@@ -267,7 +267,7 @@ class Paymaster implements StrategyInterface
 					"access_token" => $accessToken,
 					"merchant_id" => $merchantId,
 					"merchant_transaction_id" => $merchantTransactionId,
-					//"processor_transaction_id" => $processorTransactionId,
+					"processor_transaction_id" => $processorTransactionId,
 				]);
 
 				$sign = hash("sha256", base64_encode($header).".".base64_encode($body).";".$secretKey, true);
