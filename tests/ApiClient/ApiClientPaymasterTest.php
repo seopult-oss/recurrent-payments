@@ -25,8 +25,8 @@ class ApiClientPaymasterTest extends \Codeception\Test\Unit
             'secretKey' => 'secretKey',
             'merchantId' => 'merchantId',
             'scope' => 'BankCard',
-			'spendLimitMonth' => 3000
-			'spendLimitWeek' => 3000
+			'spendLimitMonth' => 3000,
+			'spendLimitWeek' => 3000,
 			'spendLimitDay' => 3000
         ];
 
