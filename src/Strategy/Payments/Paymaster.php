@@ -95,10 +95,15 @@ class Paymaster implements StrategyInterface
 				}
 				$scope = $params['scope'];
 
-				if (empty($params['spendLimit'])) {
+				if (empty($params['spendLimitMonth']) ||
+					empty($params['spendLimitWeek']) ||
+					empty($params['spendLimitDay'])
+				) {
 					throw new \Exception("Spends limit does not exist");
 				}
-				$spendLimit = $params['spendLimit'];
+				$spendLimitMonth = $params['spendLimitMonth'];
+				$spendLimitWeek = $params['spendLimitWeek'];
+				$spendLimitDay = $params['spendLimitDay'];
 
 				$header = json_encode([
 					"alg" => 'HS256',
@@ -110,7 +115,7 @@ class Paymaster implements StrategyInterface
 					"redirect_uri" => $redirectUri,
 					"scope" => $scope,
 					"limits" => [
-						"RUB" => "$spendLimit;$spendLimit;$spendLimit"
+						"RUB" => "$spendLimitDay;$spendLimitWeek;$spendLimitMonth"
 					]
 				]);
 
