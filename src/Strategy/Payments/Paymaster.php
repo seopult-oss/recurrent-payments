@@ -212,6 +212,12 @@ class Paymaster implements StrategyInterface
 				if (empty($params['amount'])) {
 					throw new \Exception("Amount does not exist");
 				}
+
+				$description = '';
+				if (!empty($params['description'])) {
+					$description = $params['description'];
+				}
+
 				$amount = $params['amount'];
 
 				$header = json_encode([
@@ -223,7 +229,8 @@ class Paymaster implements StrategyInterface
 					"merchant_id" => $merchantId,
 					"merchant_transaction_id" => $merchantTransactionId,
 					"amount" => $amount,
-					"currency" => 'RUB'
+					"currency" => 'RUB',
+					"description" => $description
 				]);
 
 				$sign = hash("sha256", base64_encode($header).".".base64_encode($body).";".$secretKey, true);
